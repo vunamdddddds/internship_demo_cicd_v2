@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  internship-app:
+    build: .
+    container_name: internship-app
+    ports:
+      - "${APPLICATION_PORT}:${APPLICATION_PORT}"
+    environment:
+      - APPLICATION_PORT=${APPLICATION_PORT}
+      # Update the database URL to point to the mysql-db service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/${DB_NAME}?createDatabaseIfNotExist=true
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_EMAIL=${SMTP_EMAIL}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - CLIENT_ID_GOOGLE=${CLIENT_ID_GOOGLE}
+    depends_on:
+      - mysql-db
+    networks:
+      - internship-network
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306" # Map host port 3307 to container port 3306 to avoid conflicts
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - internship-network
+
+networks:
+  internship-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

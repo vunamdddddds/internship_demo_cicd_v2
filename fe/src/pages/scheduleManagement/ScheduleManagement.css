@@ -1,0 +1,10 @@
+.fc-selectButton-button {
+  all: unset !important; /* xóa hết style button */
+  width: 200px !important;
+}
+
+/* Đảm bảo header ở trên phần calendar grid */
+.fc-header-toolbar {
+  position: relative;
+  z-index: 50;
+}

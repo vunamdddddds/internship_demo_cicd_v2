@@ -1,0 +1,13 @@
+package com.example.InternShip.dto.sprint.request;
+
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Data
+public class UpdateSprintRequest {
+    private String name;
+    private String goal;
+    private LocalDate startDate;
+    private LocalDate endDate;
+}

@@ -1,0 +1,42 @@
+.leave-container {
+  background-color: #fbfdff; /* màu xám nhạt dịu */
+  min-height: 100%;
+  border-radius: 5px;
+  padding: 30px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #111827; /* chữ tối, rõ */
+}
+
+.leave-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff; /* vẫn trắng để nổi bật */
+  border: 1px solid #d1d5db; /* xám nhẹ dịu hơn */
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* bóng nhẹ, mềm mại */
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px); /* hiệu ứng hover nhẹ */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+}

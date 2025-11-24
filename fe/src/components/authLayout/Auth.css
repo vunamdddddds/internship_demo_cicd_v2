@@ -1,0 +1,234 @@
+/* src/components/Auth.css - PHƯƠNG ÁN 2 */
+
+/* Tổng thể trang */
+.auth-container {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f7f6; /* Màu nền chính */
+  position: relative;
+  overflow: hidden;
+}
+
+/* === TẠO LỚP NỀN GRADIENT CÓ ĐƯỜNG CẮT CHÉO === */
+.auth-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Gradient mới */
+  background: linear-gradient(
+    135deg,
+    #a8b1ff 0%,
+    #8ec5fc 40%,
+    #c2e9fb 70%,
+    #f6d365 100%
+  );
+  /* Tạo đường cắt chéo bằng clip-path */
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+  z-index: 0;
+}
+
+/* Nút chuyển đổi Đăng nhập/Đăng ký ở góc phải */
+.nav-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: 1px solid #333;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  z-index: 2; /* Đảm bảo nút nổi lên trên nền */
+}
+
+.nav-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Khung form chính */
+.auth-form-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 1;
+}
+
+/* ... (Phần còn lại của file CSS giữ nguyên như phương án 1) ... */
+
+.auth-form-container h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.auth-form-container .subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input .eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: #212529;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #343a40;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #aaa;
+  margin: 20px 0;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.separator:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: 0.25em;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 12px;
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-google:hover {
+  background-color: #e9ecef;
+}
+
+.btn-google .google-icon {
+  font-size: 20px;
+}
+
+.options-container {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.auth-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: #666; /* Đổi màu để dễ đọc hơn trên nền trắng */
+  font-size: 14px;
+  z-index: 2;
+}
+
+/* Style cho nhóm nút bấm nằm cạnh nhau */
+.btn-group {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa hai nút */
+  margin-top: 20px;
+}
+
+/* Style cho nút phụ (ví dụ: nút Trở lại) */
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  background-color: #6c757d; /* Màu xám */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Đảm bảo nút primary trong group cũng chiếm 100% width của nó */
+.btn-group .btn-primary {
+  width: 100%;
+}
