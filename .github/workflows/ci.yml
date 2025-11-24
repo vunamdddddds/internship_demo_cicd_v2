@@ -28,13 +28,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: | 
             ${{ runner.os }}-m2-
       - name: Run Backend Tests
         run: mvn test
+        working-directory: ./be
 
       - name: Build Backend
         run: mvn -B clean package
+        working-directory: ./be
 
     
