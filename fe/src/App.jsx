@@ -27,10 +27,11 @@ import EvaluationDiligenceDetail from "./pages/evaluationReport/DiligenceDetail"
 import LeaveRequest from "./pages/leaveRequest/LeaveRequest";
 import MentorEvaluation from "./pages/MentorEvaluation/MentorEvaluation";
 import LeaveRequestManagement from "./pages/leaveRequestManagement/LeaveRequestManagement";
-import InternSupportRequest from "./pages/InternSupportRequest/InternSupportRequest"; 
+import InternSupportRequest from "~/pages/internSupportRequest/InternSupportRequest"; 
 import SupportRequestList from "./pages/supportRequest/SupportRequestList";
 import SupportRequestDetail from "./pages/supportRequest/SupportRequestDetail";
-import AllowanceManagement  from "./pages/allowance/AllowanceManagement";
+import AllowanceManagement from "./pages/allowance/AllowanceManagement";
+import AllowancePackageManagement from "./pages/allowancePackage/AllowancePackageManagement";
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
             element={<InternshipApplicationManagement />}
           />
           <Route path="allowance" element={<AllowanceManagement />} />
+          <Route path="allowance-package" element={<AllowancePackageManagement />} />
           <Route
             path="internshipProgram"
             element={<InternshipProgramManagament />}

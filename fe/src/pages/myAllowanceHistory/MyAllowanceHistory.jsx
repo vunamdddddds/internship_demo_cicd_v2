@@ -83,7 +83,7 @@ const MyAllowanceHistory = () => {
             {!error && paginationInfo.totalElements > 0 && (
                  <Pagination
                     pagination={paginationInfo}
-                    filters={filters}
+                    currentPage={filters.page}
                     changePage={handlePageChange}
                     name="bản ghi"
                 />

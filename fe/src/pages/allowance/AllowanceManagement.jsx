@@ -1,19 +1,16 @@
 // src/pages/allowance/AllowanceManagement.jsx
 import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 import AllowanceFilters from "./AllowanceFilters.jsx";
 import AllowanceTable from "./AllowanceTable.jsx";
 import Pagination from "~/components/Pagination";
-import CreateAllowanceModal from "./CreateAllowanceModal.jsx";
 import { getInternshipProgram } from "~/services/InternshipProgramService";
-import { getAllowances, transferAllowance, createAllowance, cancelAllowance } from "~/services/AllowanceService.jsx";
+import { getAllowances } from "~/services/AllowanceService.jsx";
 
 import { useSearchParams } from "react-router-dom";
 
 const AllowanceManagement = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [internshipProgramOptions, setInternshipProgramOptions] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -93,62 +90,6 @@ const AllowanceManagement = () => {
     setAppliedFilters({ ...filters, page: 0 });
   };
 
-  const handleTransfer = async (item) => {
-    const result = await Swal.fire({
-      title: "Xác nhận chuyển phụ cấp",
-      html: `<div style="text-align:center;padding:16px 0">
-        <p>Chuyển cho <strong>${item.internName}</strong></p>
-        <p><strong>Kỳ:</strong> ${item.internshipProgramName}</p>
-        <p style="font-size:18px;color:#dc2626"><strong>${item.amount.toLocaleString("vi-VN")} VND</strong></p>
-      </div>`,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#16a34a",
-      cancelButtonColor: "#dc2626",
-      confirmButtonText: "Chuyển tiền",
-      cancelButtonText: "Hủy",
-    });
-
-    if (result.isConfirmed) {
-      const updated = await transferAllowance(item.id);
-      if (updated) {
-        setData(prev => prev.map(x => (x.id === updated.id ? updated : x)));
-      }
-    }
-  };
-
-  const handleCancel = async (item) => {
-    const result = await Swal.fire({
-      title: "Xác nhận hủy",
-      text: `Bạn có chắc chắn muốn hủy khoản phụ cấp cho ${item.internName}? Hành động này không thể hoàn tác.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#dc2626",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Đồng ý hủy",
-      cancelButtonText: "Không",
-    });
-
-    if (result.isConfirmed) {
-      await cancelAllowance(item.id);
-      // Cập nhật lại trạng thái trên UI
-      setData(prev => prev.map(x => x.id === item.id ? { ...x, status: "CANCELED" } : x));
-    }
-  };
-  
-  const handleCreateSubmit = async (formData) => {
-    try {
-      const newData = await createAllowance(formData);
-      if (newData) {
-        setData(prev => [newData, ...prev]);
-        setIsModalOpen(false);
-      }
-    } catch(err) {
-      // Lỗi đã được xử lý bằng toast trong service
-      console.error(err);
-    }
-  };
-
   return (
     <div className="main-content">
       <div className="page-title">Quản lý phụ cấp thực tập sinh</div>
@@ -159,30 +100,16 @@ const AllowanceManagement = () => {
         onSearch={handleSearch}
       />
 
-      <div className="mb-4">
-        <button className="btn btn-add" onClick={() => setIsModalOpen(true)}>
-          Tạo mới
-        </button>
-      </div>
-
-      <AllowanceTable 
-        data={data} 
-        loading={loading} 
-        onTransfer={handleTransfer}
-        onCancel={handleCancel}
+      <AllowanceTable
+        data={data}
+        loading={loading}
       />
 
       <Pagination
         pagination={pagination}
-        filters={appliedFilters}
-        changePage={(page) => setAppliedFilters((prev) => ({ ...prev, page }))}
+        currentPage={appliedFilters.page + 1}
+        changePage={(page) => setAppliedFilters((prev) => ({ ...prev, page: page - 1 }))}
         name="phụ cấp"
-      />
-
-      <CreateAllowanceModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleCreateSubmit}
       />
     </div>
   );

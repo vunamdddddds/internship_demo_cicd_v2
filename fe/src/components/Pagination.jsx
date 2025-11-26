@@ -1,9 +1,9 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const Pagination = ({ pagination, filters, changePage, name }) => {
+const Pagination = ({ pagination, currentPage, changePage, name }) => {
   const { totalPages, hasNext, hasPrevious, totalElements } = pagination;
-  const current = filters.page;
+  const current = currentPage;
 
   const pages = [];
   if (current > 2)

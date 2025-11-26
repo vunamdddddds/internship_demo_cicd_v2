@@ -68,6 +68,48 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
+    @Override
+    public FileResponse uploadFile(byte[] fileBytes, String fileName, String folder) {
+        if (fileBytes == null || fileBytes.length == 0) {
+            throw new RuntimeException(ErrorCode.FILE_NOT_NULL.getMessage());
+        }
+        if (fileBytes.length > MAX_FILE_SIZE) {
+            throw new RuntimeException(ErrorCode.FILE_INVALID.getMessage());
+        }
+
+        try {
+            String publicIdWithoutExtension = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf(".")) : fileName;
+
+            @SuppressWarnings("rawtypes")
+            Map uploadResult = cloudinary.uploader().upload(fileBytes,
+                    ObjectUtils.asMap(
+                            "resource_type", "auto",
+                            "folder", folder,
+                            "public_id", publicIdWithoutExtension,
+                            "overwrite", true,
+                            "unique_filename", false
+                    ));
+
+            String publicId = (String) uploadResult.get("public_id");
+            String secureUrl = (String) uploadResult.get("secure_url");
+            String fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"; // Assuming Excel
+
+            return FileResponse.builder()
+                    .fileName(fileName)
+                    .fileUrl(secureUrl)
+                    .publicId(publicId)
+                    .fileSize((long) fileBytes.length)
+                    .fileType(fileType)
+                    .uploadDate(LocalDateTime.now())
+                    .message("Upload thành công!")
+                    .build();
+
+        } catch (IOException e) {
+            log.error("Error uploading byte array: ", e);
+            throw new RuntimeException(ErrorCode.UPLOAD_FILE_FAILED.getMessage());
+        }
+    }
+
     private void validateFile(MultipartFile file, String folder) {
         if (file.isEmpty()) {
             throw new RuntimeException(ErrorCode.FILE_NOT_NULL.getMessage());

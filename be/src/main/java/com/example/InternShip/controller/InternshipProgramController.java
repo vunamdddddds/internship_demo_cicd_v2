@@ -27,11 +27,13 @@ public class InternshipProgramController {
     public ResponseEntity<?> getAllInternshipPrograms(
             @RequestParam(required = false, defaultValue = "") List<Integer> department,
             @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "false") boolean activeOnly,
             @RequestParam(required = false, defaultValue = "1") int page) {
 
         return ResponseEntity.ok(internshipProgramService.getAllInternshipPrograms(
                 department,
                 keyword,
+                activeOnly,
                 page));
     }
 

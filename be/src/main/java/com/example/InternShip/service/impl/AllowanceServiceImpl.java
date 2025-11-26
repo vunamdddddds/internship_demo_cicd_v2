@@ -99,22 +99,6 @@ public class AllowanceServiceImpl implements AllowanceService {
                 allowancePage.hasPrevious());
     }
 
-    @Override
-    @Transactional
-    public AllowanceResponse transferAllowance(long id) {
-        Allowance allowance = allowanceRepository.findById((int) id)
-                .orElseThrow(() -> new NotFoundException("Allowance not found with id: " + id));
-
-        if (allowance.getStatus() == Allowance.Status.PAID) {
-            throw new IllegalStateException("Allowance with id " + id + " has already been paid.");
-        }
-       
-        allowance.setStatus(Allowance.Status.PAID);
-        allowance.setPaidAt(LocalDateTime.now());
-
-        Allowance updatedAllowance = allowanceRepository.save(allowance);
-        return mapToAllowanceResponse(updatedAllowance);
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -136,35 +120,6 @@ public class AllowanceServiceImpl implements AllowanceService {
                 allowancePage.getTotalPages(),
                 allowancePage.hasNext(),
                 allowancePage.hasPrevious());
-    }
-
-    @Override
-    @Transactional
-    public AllowanceResponse createAllowance(AllowanceRequest request) {
-       
-        Intern intern = internRepository.findById(request.getInternId())
-                 .orElseThrow(() -> new NotFoundException("Intern not found with id: " + request.getInternId()));
-
-        Allowance allowance = new Allowance();
-        allowance.setIntern(intern);
-        allowance.setAmount(request.getAmount());
-        allowance.setStatus(Allowance.Status.PENDING);
-        Allowance savedAllowance = allowanceRepository.save(allowance);
-        return mapToAllowanceResponse(savedAllowance);
-    }
-
-    @Override
-    @Transactional
-    public void cancelAllowance(long id) {
-        Allowance allowance = allowanceRepository.findById((int) id)
-                .orElseThrow(() -> new NotFoundException("Allowance not found with id: " + id));
-
-        if (allowance.getStatus() == Allowance.Status.PAID) {
-            throw new InvalidRequestException("Cannot cancel an allowance that has already been paid.");
-        }
-
-        allowance.setStatus(Allowance.Status.CANCELED);
-        allowanceRepository.save(allowance);
     }
 
     private AllowanceResponse mapToAllowanceResponse(Allowance allowance) {

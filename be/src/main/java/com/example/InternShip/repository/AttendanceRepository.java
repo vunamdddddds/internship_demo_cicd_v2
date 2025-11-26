@@ -12,6 +12,16 @@ import java.util.Optional;
 import java.util.List;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
+    @Query("SELECT COUNT(a) FROM Attendance a " +
+           "WHERE a.intern.id = :internId " +
+           "AND a.date BETWEEN :startDate AND :endDate " +
+           "AND a.checkIn IS NOT NULL AND a.checkOut IS NOT NULL " +
+           "AND a.checkIn <= a.timeStart " +
+           "AND a.checkOut >= a.timeEnd")
+    long countWorkDays(@Param("internId") Integer internId,
+                       @Param("startDate") LocalDate startDate,
+                       @Param("endDate") LocalDate endDate);
+
     // Tìm bản ghi chấm công của 1 intern, trong 1 ngày cụ thể
     Optional<Attendance> findByInternAndDate(Intern intern, LocalDate date);
 

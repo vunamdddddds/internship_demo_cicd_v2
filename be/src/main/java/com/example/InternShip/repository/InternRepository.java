@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.example.InternShip.entity.User;
 
-public interface InternRepository extends JpaRepository<Intern, Integer> {
+public interface  InternRepository extends JpaRepository<Intern, Integer> {
 
     @Query("""
                 SELECT i

@@ -49,6 +49,7 @@ const rolePermissions = {
     "/evaluationReport",
     "/supportRequestList",
     "/allowance",
+    "/allowance-package",
   ],
   VISITOR: [],
 };
@@ -80,8 +81,8 @@ const menuItems = [
     icon: ClipboardList,
     label: "Quản lý đơn xin phép",
   },
-    { path: "/allowance", icon: FileText, label: "Quản lí phụ cấp " },
-
+  { path: "/allowance", icon: FileText, label: "Quản lí phụ cấp " },
+  { path: "/allowance-package", icon: Award, label: "Quản lí gói phụ cấp" },
   { path: "/diligenceHr", icon: FileText, label: "Quản lý chuyên cần" },
   {
     path: "/mentor/evaluation",

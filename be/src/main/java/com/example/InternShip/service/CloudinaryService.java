@@ -6,4 +6,5 @@ import com.example.InternShip.dto.cloudinary.response.FileResponse;
 
 public interface CloudinaryService {
     FileResponse uploadFile(MultipartFile file,String folder);
+    FileResponse uploadFile(byte[] fileBytes, String fileName, String folder);
 }

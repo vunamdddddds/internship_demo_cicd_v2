@@ -21,6 +21,7 @@ import com.example.InternShip.job.StartInternship;
 import com.example.InternShip.repository.*;
 import com.example.InternShip.service.EmailService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.quartz.*;
@@ -28,7 +29,9 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.example.InternShip.service.InternshipProgramService;
 
@@ -59,24 +62,40 @@ public class InternshipProgramServiceImpl implements InternshipProgramService {
                 .toList();
     }
 
-    @Override // Tùng
-    public PagedResponse<GetInternProgramResponse> getAllInternshipPrograms(List<Integer> department,
-                                                                            String keyword, int page) {
+    @Override
+    public PagedResponse<GetInternProgramResponse> getAllInternshipPrograms(List<Integer> departmentIds, String keyword, boolean activeOnly, int page) {
         page = Math.max(0, page - 1);
         PageRequest pageable = PageRequest.of(page, 10, Sort.by("id").descending());
 
-        // Kiểm tra null vì Hibernate không coi List rỗng là null
-        if (department == null || department.isEmpty()) {
-            department = null;
-        }
+        Specification<InternshipProgram> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-        Page<InternshipProgram> internshipPrograms = internshipProgramRepository.searchInternshipProgram(department,
-                keyword, pageable);
+            // Filter by department
+            if (departmentIds != null && !departmentIds.isEmpty()) {
+                predicates.add(root.get("department").get("id").in(departmentIds));
+            }
+
+            // Filter by keyword
+            if (StringUtils.hasText(keyword)) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
+            }
+
+            // Filter by active programs (timeEnd > now)
+            if (activeOnly) {
+                predicates.add(criteriaBuilder.greaterThan(root.get("timeEnd"), LocalDateTime.now()));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Page<InternshipProgram> internshipPrograms = internshipProgramRepository.findAll(spec, pageable);
 
         List<GetInternProgramResponse> responses = internshipPrograms.stream()
                 .map(internshipProgram -> {
                     GetInternProgramResponse response = modelMapper.map(internshipProgram, GetInternProgramResponse.class);
-                    response.setDepartment(internshipProgram.getDepartment().getName());
+                    if (internshipProgram.getDepartment() != null) {
+                        response.setDepartment(internshipProgram.getDepartment().getName());
+                    }
                     return response;
                 })
                 .collect(Collectors.toList());

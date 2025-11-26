@@ -14,7 +14,7 @@ import org.quartz.SchedulerException;
 
 public interface InternshipProgramService {
     public List<GetAllInternProgramResponse> getAllPrograms();
-    PagedResponse<GetInternProgramResponse> getAllInternshipPrograms(List<Integer> department, String keyword, int page);
+    PagedResponse<GetInternProgramResponse> getAllInternshipPrograms(List<Integer> department, String keyword, boolean activeOnly, int page);
     public void endPublish (int programId);
     public void endReviewing (int programId);
     public void startInternship(int programId);

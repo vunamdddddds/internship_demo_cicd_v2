@@ -29,11 +29,6 @@ public class AllowanceController {
         return ResponseEntity.ok(allowances);
     }
 
-    @PutMapping("/{id}/transfer")
-    public ResponseEntity<AllowanceResponse> transferAllowance(@PathVariable("id") long id) {
-        AllowanceResponse updatedAllowance = allowanceService.transferAllowance(id);
-        return ResponseEntity.ok(updatedAllowance);
-    }
 
     @GetMapping("/my-history")
     public ResponseEntity<PagedResponse<AllowanceResponse>> getMyHistory(
@@ -42,15 +37,4 @@ public class AllowanceController {
         return ResponseEntity.ok(allowances);
     }
 
-    @PostMapping
-    public ResponseEntity<AllowanceResponse> createAllowance(@Valid @RequestBody AllowanceRequest request) {
-        AllowanceResponse newAllowance = allowanceService.createAllowance(request);
-        return new ResponseEntity<>(newAllowance, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelAllowance(@PathVariable("id") long id) {
-        allowanceService.cancelAllowance(id);
-        return ResponseEntity.noContent().build();
-    }
 }
