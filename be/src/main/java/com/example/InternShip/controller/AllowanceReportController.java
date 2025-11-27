@@ -1,11 +1,11 @@
 package com.example.InternShip.controller;
-
+import com.example.InternShip.entity.Allowance;
 import com.example.InternShip.entity.MonthlyAllowanceReport;
 import com.example.InternShip.service.AllowanceReportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,36 +19,47 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/hr/allowance/reports")
+@RequestMapping("/api/v1/hr/allowance/reports") // Corrected base path
 public class AllowanceReportController {
 
     @Autowired
     private AllowanceReportService allowanceReportService;
 
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportAllowanceReport(
-            @RequestParam(name = "month") String monthYearString) {
+    public ResponseEntity<byte[]> exportAllowanceReport(@RequestParam("month") String month) {
         try {
-            YearMonth yearMonth = YearMonth.parse(monthYearString, DateTimeFormatter.ofPattern("MM-yyyy"));
+            YearMonth yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("yyyy-MM"));
             byte[] excelBytes = allowanceReportService.generateAllowanceReport(yearMonth);
 
-            String fileName = "AllowanceReport_" + monthYearString + ".xlsx";
+            String fileName = "bao_cao_chi_tiet_phu_cap_thang_" + month + ".xlsx";
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .headers(headers)
                     .body(excelBytes);
-
         } catch (DateTimeParseException e) {
-            return ResponseEntity.badRequest().body(("Invalid month format. Please use MM-yyyy (e.g., 11-2025). Error: " + e.getMessage()).getBytes());
+            return ResponseEntity.badRequest().build();
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(("Error generating Excel report: " + e.getMessage()).getBytes());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<List<Allowance>> getAllowanceDetails(@RequestParam("month") String month) {
+        try {
+            YearMonth yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("yyyy-MM"));
+            List<Allowance> allowances = allowanceReportService.getAllowanceDetailsForMonth(yearMonth);
+            return ResponseEntity.ok(allowances);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<MonthlyAllowanceReport>> getGeneratedReports() {
-        List<MonthlyAllowanceReport> reports = allowanceReportService.getAllMonthlyReports();
+    public ResponseEntity<Page<MonthlyAllowanceReport>> getGeneratedReports(Pageable pageable) {
+        Page<MonthlyAllowanceReport> reports = allowanceReportService.getAllMonthlyReports(pageable);
         return ResponseEntity.ok(reports);
     }
 }

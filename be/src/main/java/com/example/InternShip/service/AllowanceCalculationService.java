@@ -95,8 +95,8 @@ public class AllowanceCalculationService {
         // After all allowances are calculated and saved, generate and upload the summary report
         if (!newlyGeneratedAllowances.isEmpty()) {
             try {
-                // 1. Generate summary report
-                byte[] reportBytes = allowanceReportService.generateMonthlySummaryReport(newlyGeneratedAllowances, yearMonth);
+                // 1. Generate DETAILED report
+                byte[] reportBytes = allowanceReportService.generateAllowanceReport(yearMonth);
                 
                 // 2. Upload to Cloudinary
                 String monthString = yearMonth.format(DateTimeFormatter.ofPattern("MM-yyyy"));

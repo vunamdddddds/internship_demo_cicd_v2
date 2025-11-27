@@ -49,7 +49,7 @@ const AllowancePackageTable = ({ data, loading, onEdit, onDelete }) => {
                     className="btn btn-danger btn-sm"
                     onClick={() => onDelete(item.id)}
                   >
-                    <FontAwesomeIcon icon={faTrash} /> Xóa
+                    <FontAwesomeIcon icon={faTrash} /> Hủy gói phụ cấp
                   </button>
                 </td>
               </tr>

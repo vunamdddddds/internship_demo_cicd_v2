@@ -48,7 +48,6 @@ const AllowancePackageManagement = () => {
     });
     if (res) {
       setAllowancePackages(res.content);
-      console.log(res);
       setPagination({
         pageNumber: res.pageable.pageNumber + 1, // Adjust for 1-based page number
         totalPages: res.totalPages,

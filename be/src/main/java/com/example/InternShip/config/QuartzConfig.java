@@ -7,7 +7,6 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import com.example.InternShip.config.AutoWiringSpringBeanJobFactory; // Add this line
 
 import javax.sql.DataSource;
 
@@ -59,5 +58,5 @@ public class QuartzConfig {
                 .withIdentity("monthlyAllowanceCalculationTrigger")
                 .withSchedule(cronSchedule("0 0 0 1 * ?")) // Cron expression for 00:00 on the 1st day of every month
                 .build();
-    }
+    } 
 }

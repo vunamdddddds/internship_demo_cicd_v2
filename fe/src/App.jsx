@@ -32,6 +32,7 @@ import SupportRequestList from "./pages/supportRequest/SupportRequestList";
 import SupportRequestDetail from "./pages/supportRequest/SupportRequestDetail";
 import AllowanceManagement from "./pages/allowance/AllowanceManagement";
 import AllowancePackageManagement from "./pages/allowancePackage/AllowancePackageManagement";
+import AllowanceReportManagement from "./pages/allowanceReport/AllowanceReportManagement";
 
 function App() {
   return (
@@ -71,7 +72,8 @@ function App() {
             path="internshipApplication"
             element={<InternshipApplicationManagement />}
           />
-          <Route path="allowance" element={<AllowanceManagement />} />
+          {/* <Route path="allowance" element={<AllowanceManagement />} /> */}
+          <Route path="allowance-report" element={<AllowanceReportManagement />} />
           <Route path="allowance-package" element={<AllowancePackageManagement />} />
           <Route
             path="internshipProgram"
