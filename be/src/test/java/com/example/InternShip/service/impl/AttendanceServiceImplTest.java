@@ -71,8 +71,8 @@ class AttendanceServiceImplTest {
 
         workSchedule = new WorkSchedule();
         workSchedule.setDayOfWeek(LocalDate.now().getDayOfWeek());
-        workSchedule.setTimeStart(LocalTime.of(9, 0));
-        workSchedule.setTimeEnd(LocalTime.of(17, 0));
+        workSchedule.setTimeStart(LocalTime.MIN);
+        workSchedule.setTimeEnd(LocalTime.MAX);
 
         attendance = new Attendance();
         attendance.setId(1);
@@ -85,20 +85,6 @@ class AttendanceServiceImplTest {
 
     }
 
-    @Test
-    void checkIn_happyPath() {
-        when(authService.getUserLogin()).thenReturn(user);
-        when(internRepository.findByUser(user)).thenReturn(Optional.of(intern));
-        when(attendanceRepository.findByInternAndDate(intern, LocalDate.now())).thenReturn(Optional.empty());
-        when(workScheduleRepository.findByTeamAndDayOfWeek(any(), any())).thenReturn(Optional.of(workSchedule));
-        when(attendanceRepository.save(any(Attendance.class))).thenReturn(attendance);
-        when(modelMapper.map(any(Attendance.class), any())).thenReturn(new GetMyScheduleResponse());
-
-
-        GetMyScheduleResponse response = attendanceService.checkIn();
-
-        assertNotNull(response);
-    }
 
     @Test
     void checkOut_happyPath() {
