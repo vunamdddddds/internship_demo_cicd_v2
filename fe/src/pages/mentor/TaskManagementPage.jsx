@@ -25,7 +25,7 @@ function TaskManagementPage() {
   const [selectedSprintId, setSelectedSprintId] = useState("");
 
   // Loading states
-  const [isLoadingTeams, setIsLoadingTeams] = useState(true);
+  const [ setIsLoadingTeams] = useState(true);
   const [isLoadingSprints, setIsLoadingSprints] = useState(false);
   const [isLoadingTasks, setIsLoadingTasks] = useState(false);
 

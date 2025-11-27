@@ -49,6 +49,7 @@ export const getInternshipTerms = async () => {
     return terms.map((t) => ({ value: t, label: t }));
   } catch (err) {
     toast.error("Lỗi tải kỳ thực tập");
+    console.error("Error fetching internship terms:", err);
     return [];
   }
 };
@@ -66,13 +67,15 @@ export const getGroups = async () => {
     ];
   } catch (err) {
     toast.error("Lỗi tải nhóm thực tập");
+    console.error("Error fetching groups:", err);
     return [{ value: "ALL", label: "Tất cả" }];
   }
 };
 
 // This function has no backend equivalent and is now disabled.
 export const exportDiligenceReport = async (format) => {
-  toast.warn("Chức năng xuất báo cáo chưa được hỗ trợ.");
+  
+  toast.warn("Chức năng xuất báo cáo chưa được hỗ trợ.:"+ format);
   // try {
   //   const result = await exportFile(format);
   //   toast.success(`Đã xuất báo cáo dưới dạng ${format.toUpperCase()}!`);

@@ -42,7 +42,7 @@ const EvaluationReport = () => {
   const [termOptions, setTermOptions] = useState([]);
   const [uniOptions, setUniOptions] = useState([]);
   const [loadingFilters, setLoadingFilters] = useState(true);
-  const [currentInternshipProgramId, setCurrentInternshipProgramId] = useState(null);
+  const [ setCurrentInternshipProgramId] = useState(null);
 
   const navigate = useNavigate();
 

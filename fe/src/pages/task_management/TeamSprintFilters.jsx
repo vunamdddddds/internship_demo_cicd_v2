@@ -59,7 +59,7 @@ function TeamSprintFilters({
   const [showReportModal, setShowReportModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showInternFeedbackModal, setShowInternFeedbackModal] = useState(false);
-  const [internReport, setInternReport] = useState(null);
+  const [internReport] = useState(null);
   const [mentorFeedback, setMentorFeedback] = useState(null);
 
   // Hàm fetch feedback mentor theo sprintId
@@ -203,7 +203,6 @@ function TeamSprintFilters({
           onChange={(option) => {
             onSprintChange(option);
             fetchMentorFeedBack(option?.value);
-            fetchInternReport(option?.value);
           }}
           options={sprintOptions}
           components={{ Option: SprintOption }}
@@ -315,7 +314,6 @@ function TeamSprintFilters({
         onSubmitSuccess={() => {
           setShowSubmitModal(false);
           // Có thể refresh báo cáo ở đây nếu cần
-          fetchInternReport(selectedSprintId);
         }}
       />
 

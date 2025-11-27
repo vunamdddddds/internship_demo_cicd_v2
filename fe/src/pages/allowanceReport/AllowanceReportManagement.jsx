@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import DetailedReportDownloader from "./DetailedReportDownloader";
 import AllowanceReportTable from "./AllowanceReportTable";
 import AllowanceReportApi from "../../api/AllowanceReportApi";
 import AllowanceDetailsModal from "./AllowanceDetailsModal";
@@ -73,7 +72,6 @@ const AllowanceReportManagement = () => {
         Quản lý Báo cáo Phụ cấp
       </h1>
       
-      <DetailedReportDownloader />
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       
