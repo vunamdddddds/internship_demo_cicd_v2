@@ -17,6 +17,10 @@ RUN mvn clean package -DskipTests
 # Stage 2: Create the final lightweight image
 FROM eclipse-temurin:21-jre
 
+# Create a non-root user
+RUN addgroup --system spring && adduser --system --no-create-home --ingroup spring spring
+USER spring:spring
+
 # Set the working directory
 WORKDIR /app
 

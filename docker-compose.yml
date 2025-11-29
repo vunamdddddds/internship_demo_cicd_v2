@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  internship-app-backend:
+    build:
+      context: ./be
+      dockerfile: Dockerfile
+    container_name: backend-container
+    restart: unless-stopped
+    ports:
+      - "8082:8080"
+    # File này chỉ dành cho các biến riêng của backend (SMTP, Cloudinary...)
+    # Docker Compose sẽ đọc file .env ở gốc trước để thay thế các biến bên dưới
+    env_file:
+      - ./.env
+    environment:
+      # Các biến này được thay thế từ tệp .env ở thư mục gốc
+      - DB_NAME=${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/${DB_NAME}?createDatabaseIfNotExist=true
+    depends_on:
+      - mysql-db
+    networks:
+      - internship-network
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    # Không cần env_file ở đây nữa, vì các biến được thay thế từ file .env ở gốc
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - internship-network
+
+  internship-app-frontend:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile
+      args:
+        # Biến này được thay thế từ tệp .env ở thư mục gốc
+        - VITE_API_URL=${VITE_API_URL}
+        - VITE_SOCKET_URL=${VITE_SOCKET_URL}
+    container_name: frontend-container
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - internship-app-backend
+    networks:
+      - internship-network
+
+networks:
+  internship-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+
