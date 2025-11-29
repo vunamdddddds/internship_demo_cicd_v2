@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
   internship-app-backend:
-    build:
-      context: ./be
-      dockerfile: Dockerfile
+    image: namvu26112005/code_moi_nhat-internship-app-backend:latest
     container_name: backend-container
     restart: unless-stopped
     ports:
@@ -39,10 +37,8 @@ services:
       - internship-network
 
   internship-app-frontend:
-    build:
-      context: ./fe
-      dockerfile: Dockerfile
-      args:
+    image: namvu26112005/code_moi_nhat-internship-app-frontend:latest
+    args:
         # Biến này được thay thế từ tệp .env ở thư mục gốc
         - VITE_API_URL=${VITE_API_URL}
         - VITE_SOCKET_URL=${VITE_SOCKET_URL}
