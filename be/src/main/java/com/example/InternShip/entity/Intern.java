@@ -92,3 +92,4 @@ public class Intern {
         DROPPED // dừng thực tập
     }
 }
+ 

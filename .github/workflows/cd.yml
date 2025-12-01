@@ -22,6 +22,13 @@ jobs:
             # Di chuyển đến thư mục chứa docker-compose.yml trên EC2
             cd /home/ubuntu/docker_internship
 
+            # ===== BƯỚC DỌN DẸP TỰ ĐỘNG =====
+            # Lệnh này sẽ xóa tất cả các container đã dừng, các network không sử dụng,
+            # và quan trọng nhất là tất cả các image không được dùng bởi ít nhất một container.
+            # Điều này giúp giải phóng dung lượng ổ đĩa một cách an toàn.
+            echo "--- Cleaning up unused Docker resources to free up disk space ---"
+            docker system prune -a -f
+
             # Đăng nhập vào Docker Hub (nếu cần cho image private)
             echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
