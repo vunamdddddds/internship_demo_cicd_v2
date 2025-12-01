@@ -1,0 +1,35 @@
+name: CD - Deploy to EC2
+on:
+  workflow_run:
+    workflows: ["CI - Build and Test"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            # Di chuyển đến thư mục chứa docker-compose.yml trên EC2
+            cd /home/ubuntu/docker_internship
+
+            # Đăng nhập vào Docker Hub (nếu cần cho image private)
+            echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+            # Lấy các image mới nhất từ Docker Hub
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/internship-backend:dev
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/internship-frontend:dev
+
+            # Khởi động lại các container với image mới
+            # docker-compose.yml của bạn phải tham chiếu đến các image này
+            docker-compose down
+            docker-compose up -d
