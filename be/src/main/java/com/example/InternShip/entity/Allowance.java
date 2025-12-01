@@ -59,7 +59,7 @@ public class Allowance {
     @Column(name = "last_updated_at") // Renamed from 'updated_at' to 'last_updated_at' to match schema
     private LocalDateTime lastUpdatedAt;
 
-    public enum Status{
+    public enum Status {
         PENDING,
         PAID,
         CANCELED,
