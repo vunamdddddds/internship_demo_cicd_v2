@@ -58,31 +58,31 @@ public class Intern {
     private List<SupportRequest> supportRequests;
 
     @Column(precision = 4, scale = 2)
-    private BigDecimal expertiseScore; //điểm chuyên môn
+    private BigDecimal expertiseScore; // điểm chuyên môn
 
     @Column(precision = 4, scale = 2)
-    private BigDecimal qualityScore;//điểm chất lượng
+    private BigDecimal qualityScore;// điểm chất lượng
 
     @Column(precision = 4, scale = 2)
-    private BigDecimal problemSolvingScore;//điểm giải quyết vấn đề
+    private BigDecimal problemSolvingScore;// điểm giải quyết vấn đề
 
     @Column(precision = 4, scale = 2)
-    private BigDecimal technologyLearningScore;//điểm học công nghệ mới
+    private BigDecimal technologyLearningScore;// điểm học công nghệ mới
 
     @Enumerated(EnumType.STRING)
-    private SoftSkill softSkill;//kĩ năng mềm
+    private SoftSkill softSkill;// kĩ năng mềm
 
     @Column(columnDefinition = "TEXT")
-    private String assessment;//nhận xét
+    private String assessment;// nhận xét
 
     @Column(precision = 15, scale = 0)
     private BigDecimal allowanceOverride;
 
     public enum SoftSkill {
-        GOOD, //tốt
-        FAIR, //khá
-        AVERAGE, //trung bình
-        POOR //kém
+        GOOD, // tốt
+        FAIR, // khá
+        AVERAGE, // trung bình
+        POOR // kém
     }
 
     public enum Status {
