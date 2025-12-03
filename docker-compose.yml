@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   internship-app-backend:
-    image: namvu26112005/internship-backend:v2
+    image: namvu26112005/internship-backend:dev
     container_name: backend-container
     restart: unless-stopped
     ports:
@@ -37,7 +37,7 @@ services:
       - internship-network
 
   internship-app-frontend:
-    image: namvu26112005/internship-frontend:v2
+    image: namvu26112005/internship-frontend:dev
     
     env_file:
       - ./.env          
